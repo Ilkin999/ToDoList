@@ -2,10 +2,12 @@ const addBtn = document.querySelector('.add-btn');
 const input = document.querySelector('.todo-input');
 const list = document.querySelector('.list');
 const sortBtn = document.querySelector('.sort-btn');
+const sortSvg = document.querySelector('.sort-svg');
 let deleteBtn = document.querySelectorAll('.delete-btn');
 let listItems = document.querySelector("li");
 
 let todos = [];
+
 let storage = JSON.parse(localStorage.getItem("listName"));
 
 storage === null ? todos = [] : todos = storage;
@@ -23,8 +25,8 @@ function refreshTodo(){
 
     list.innerHTML = space;
 }
-refreshTodo();
 
+refreshTodo();
 
 function addTodo(){
 
@@ -52,15 +54,25 @@ function deleteTodo(index){
     refreshTodo();
 }
 
-function sortTodo(){
-    todos.sort();
-    
-    localStorage.setItem("listName", JSON.stringify(todos));
+let countClick = 0;
 
-    refreshTodo();
+function sortTodo(){
+    countClick += 1;
+
+    if (countClick % 2 == 1){
+        sortSvg.src = "./images/sortDarkUp.svg";
+        todos.sort();
+    }
+    else {
+       sortSvg.src = "./images/sortDarkDown.svg";
+        todos.sort().reverse();
+    }
+
+    localStorage.setItem("listName", JSON.stringify(todos));
+    refreshTodo();    
 }
 
-sortBtn.addEventListener('click', sortTodo);    
+sortBtn.addEventListener('click', sortTodo); 
 
 document.addEventListener('keyup', logKey);
 
@@ -70,3 +82,25 @@ function logKey(e) {
   }
 }
 
+sortSvg.addEventListener("mouseover", ()=>{
+    let srcAttribute = sortSvg.getAttribute("src");   
+
+    if (countClick % 2 == 0){
+        sortSvg.setAttribute("src", "./images/sortDarkDown.svg");
+    }
+    
+    else {
+       sortSvg.setAttribute("src", "./images/sortDarkUp.svg");
+    }
+});
+
+sortSvg.addEventListener("mouseout", ()=>{
+    let srcAttribute = sortSvg.getAttribute("src");   
+
+    if (countClick % 2 == 1){
+        sortSvg.setAttribute("src", "./images/sortUp.svg");
+    }
+    else {
+       sortSvg.setAttribute("src", "./images/sortDown.svg");
+    }
+});

@@ -105,3 +105,7 @@ h1{
     background-color: white;
     border: 0;
 }
+
+.sort-btn :hover .sort-svg {
+    fill: black;
+}
