@@ -5,8 +5,10 @@ const sortBtn = document.querySelector('.sort-btn');
 let deleteBtn = document.querySelectorAll('.delete-btn');
 let listItems = document.querySelector("li");
 
-
 let todos = [];
+let storage = JSON.parse(localStorage.getItem("listName"));
+
+storage === null ? todos = [] : todos = storage;
 
 function refreshTodo(){
     let space = "";
@@ -17,18 +19,20 @@ function refreshTodo(){
         ${item}
         <button  type="submit" onClick ="deleteTodo(${index})" class='delete-btn'>X</button>
      </li>`
-
     });
 
     list.innerHTML = space;
 }
+refreshTodo();
+
 
 function addTodo(){
 
     if(!input.value == " "){
         todos.push(input.value);
-        let counts = todos.length;
-        localStorage.setItem(`${counts}`, `${input.value}`);
+        
+        localStorage.setItem("listName", JSON.stringify(todos));
+
         input.value = "";
         refreshTodo();
     }
@@ -42,11 +46,17 @@ addBtn.addEventListener('click', addTodo);
 
 function deleteTodo(index){
     todos.splice(index, 1);
+
+    localStorage.setItem("listName", JSON.stringify(todos));
+
     refreshTodo();
 }
 
 function sortTodo(){
     todos.sort();
+    
+    localStorage.setItem("listName", JSON.stringify(todos));
+
     refreshTodo();
 }
 
